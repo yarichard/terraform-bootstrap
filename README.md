@@ -18,3 +18,7 @@ terraform {
 - run terraform apply
 - uncomment code block
 - run terraform init and accept moving tfstate to S3
+
+## Prerequisites
+- Install pre-commit command (run pip install or brew install)
+- run pre-commit install 

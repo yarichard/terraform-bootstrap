@@ -32,23 +32,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tf_state_sse" {
   }
 }
 
-// IAM Policy for Terraform State Access
-data "aws_iam_policy_document" "terraform_state" {
-  statement {
-    actions = [
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:DeleteObject",
-      "s3:ListBucket"
-    ]
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.tf_state.bucket}",
-      "arn:aws:s3:::${aws_s3_bucket.tf_state.bucket}/*"
-    ]
-  }
+// OIDC Provider for GitHub
+data "tls_certificate" "github" {
+  url = "https://token.actions.githubusercontent.com"
 }
 
-resource "aws_iam_policy" "terraform_state" {
-  name   = "TerraformStatePolicy"
-  policy = data.aws_iam_policy_document.terraform_state.json
+resource "aws_iam_openid_connect_provider" "github" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 }

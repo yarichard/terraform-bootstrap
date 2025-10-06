@@ -11,9 +11,9 @@ terraform {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-bucket-yrichard"
-    key            = "bootstrap/terraform.tfstate"
-    region         = "eu-west-3"
-    encrypt        = true
+    bucket  = "terraform-state-bucket-yrichard"
+    key     = "bootstrap/terraform.tfstate"
+    region  = "eu-west-3"
+    encrypt = true
   }
 }
