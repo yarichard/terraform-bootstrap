@@ -19,5 +19,5 @@ variable "terraform_bucket" {
 variable "github_repositories_allowed_for_terraform" {
   description = "List of GitHub repositories allowed for OIDC. to perform terraform operations"
   type        = list(string)
-  default     = ["infra-wam_message"]
+  default     = ["infra-wam_message", "infra-mountain-race"]
 }
