@@ -17,3 +17,8 @@ output "github_actions_terraform_role_name" {
   description = "GitHub Actions role name for Terraform state access."
   value       = aws_iam_role.github_actions_terraform.name
 }
+
+output "ecr_push_pull_policy_arn" {
+  description = "ARN of the shared GitHub Actions ECR push/pull policy."
+  value       = aws_iam_policy.ecr_push_pull.arn
+}
