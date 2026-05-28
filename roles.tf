@@ -72,3 +72,26 @@ resource "aws_iam_role_policy_attachment" "terraform_state_attach" {
   role       = aws_iam_role.github_actions_terraform.name
   policy_arn = aws_iam_policy.terraform_state_policy.arn
 }
+
+// Shared ECR push/pull policy — used by all app GitHub Actions ECR push roles
+data "aws_iam_policy_document" "ecr_push_pull" {
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:CompleteLayerUpload",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+      "ecr:BatchGetImage"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "ecr_push_pull" {
+  name        = "GitHubECRPushPullPolicy"
+  description = "Shared ECR push/pull permissions for GitHub Actions OIDC roles"
+  policy      = data.aws_iam_policy_document.ecr_push_pull.json
+}
